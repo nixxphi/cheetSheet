@@ -1,16 +1,10 @@
-import express from 'express';
-import multer from 'multer';
-import xlsx from 'xlsx';
 import mongoose from 'mongoose';
 import { GridFsStorage } from 'multer-gridfs-storage';
 import path from 'path';
-
-const app = express();
-const upload = multer({ dest: 'uploads/' });
-
+import dotenv from 'dotenv';
 // MongoDB connection setup
 mongoose.Promise = global.Promise;
-const dbURI = "your-mongodb-atlas-uri"; // Replace with your actual connection URI
+const dbURI = process.env.MONGODB_URI;
 const conn = mongoose.createConnection(dbURI, { useNewUrlParser: true, useUnifiedTopology: true });
 
 // GridFS storage configuration
@@ -31,6 +25,30 @@ const storage = new GridFsStorage({
 // Create upload Multer instance
 const uploadFile = multer({ storage });
 
+// Error handling middleware
+const handleError = (err, req, res, next) => {
+    console.error(err);
+    let statusCode = 500;
+    let message = 'Internal Server Error';
+
+    if (err instanceof multer.MulterError) {
+        statusCode = 400; // Bad request
+
+        switch (err.code) {
+            case 'LIMIT_FILE_SIZE':
+                message = 'File size exceeds limit.';
+                break;
+            case 'LIMIT_FILE_COUNT':
+                message = 'Too many files uploaded.';
+                break;
+            default:
+                message = err.message;
+        }
+    }
+
+    res.status(statusCode).json({ message });
+};
+
 // Routes for uploading files to specific collections
 app.post('/upload/:collection', uploadFile.single('file'), (req, res, next) => {
     if (!req.file) {
@@ -39,28 +57,19 @@ app.post('/upload/:collection', uploadFile.single('file'), (req, res, next) => {
     console.log({ file: req.file });
     res.json({ message: `${req.params.collection} data uploaded successfully!` });
     
-    // Parse the uploaded Excel file
-    const workbook = xlsx.readFile(req.file.path);
-    const worksheet = workbook.Sheets[workbook.SheetNames[0]];
-    const data = xlsx.utils.sheet_to_json(worksheet, { raw: true });
-
-    // Insert data into MongoDB
-    conn.once('open', async () => {
-        try {
-            const Model = conn.model(req.params.collection, new mongoose.Schema({}), req.params.collection);
-            await Model.create(data);
-            console.log('Data uploaded successfully');
-        } catch (error) {
-            console.error('Error uploading data:', error);
-        }
-    });
-
     // Handle connection errors (optional)
     conn.on('error', (err) => {
         console.error('Error connecting to MongoDB:', err);
     });
 });
 
-app.listen(3000, () => {
-    console.log('Server is running on port 3000');
+conn.once('open', () => {
+    console.log('Connected to MongoDB database');
 });
+
+// Handle connection errors (optional)
+conn.on('error', (err) => {
+    console.error('Error connecting to MongoDB:', err);
+});
+
+export { conn, handleError };
