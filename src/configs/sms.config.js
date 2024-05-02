@@ -1,33 +1,50 @@
-const axios = require('axios');
+import axios from 'axios';
+import fs from 'fs';
+import path from 'path';
 
-const encodedParams = new URLSearchParams();
-encodedParams.set('sender', 'MessageBird');
-encodedParams.set('body', 'This is a gsm 7-bit test message.');
-encodedParams.set('destination', '31600000001,31600000002');
-encodedParams.set('reference', '268431687');
-encodedParams.set('timestamp', '201308020025');
-encodedParams.set('replacechars', 'checked');
-encodedParams.set('type', 'normal');
-encodedParams.set('dlr_url', 'http://www.example.com/dlr-messagebird.php');
+const apiKey = process.env.MESSAGE_BIRD_API_KEY;
 
-const options = {
-  method: 'POST',
-  url: 'https://messagebird-sms-gateway.p.rapidapi.com/sms',
-  params: {
-    username: '<REQUIRED>',
-    password: '<REQUIRED>'
-  },
-  headers: {
-    'content-type': 'application/x-www-form-urlencoded',
-    'X-RapidAPI-Key': '7a98b1419fmsh5cc11d934e5bb3bp1ac46bjsn5bf889772c43',
-    'X-RapidAPI-Host': 'messagebird-sms-gateway.p.rapidapi.com'
-  },
-  data: encodedParams,
+const sendMessage = async (messageBody, destinationNumbers, emergencyType) => {
+    try {
+        // Read emergency contacts from JSON file
+        const emergencyContactsPath = path.join(__dirname, '..', 'data', 'emergency_contacts.json');
+        const emergencyContacts = JSON.parse(fs.readFileSync(emergencyContactsPath, 'utf8'));
+
+        // Get the contact number based on the emergency type
+        const contactNumber = emergencyContacts[emergencyType];
+        if (!contactNumber) {
+            throw new Error(`Emergency contact number not found for type: ${emergencyType}`);
+        }
+
+        // Construct request parameters
+        const encodedParams = new URLSearchParams();
+        encodedParams.set('body', messageBody);
+        encodedParams.set('destination', destinationNumbers.join(','));
+
+        // Construct request options
+        const requestOptions = {
+            method: 'POST',
+            url: 'https://messagebird-sms-gateway.p.rapidapi.com/sms',
+            params: {
+                username: '<REQUIRED>',
+                password: '<REQUIRED>'
+            },
+            headers: {
+                'content-type': 'application/x-www-form-urlencoded',
+                'X-RapidAPI-Key': apiKey,
+                'X-RapidAPI-Host': 'messagebird-sms-gateway.p.rapidapi.com'
+            },
+            data: encodedParams
+        };
+
+        // Send SMS message
+        const response = await axios.request(requestOptions);
+        console.log(response.data);
+        return response.data;
+    } catch (error) {
+        console.error('Error sending SMS:', error);
+        throw error;
+    }
 };
 
-try {
-	const response = await axios.request(options);
-	console.log(response.data);
-} catch (error) {
-	console.error(error);
-}
+export default sendMessage;

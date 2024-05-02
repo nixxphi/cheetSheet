@@ -1,0 +1,11 @@
+{
+  "fire": "This is an emergency alert! Fire outbreak reported in your area. Immediate assistance required.",
+  "accident": "URGENT: Road traffic accident reported. Location: [INSERT LOCATION]. Requesting immediate assistance.",
+  "assault": "Emergency: Assault incident reported. Requesting police intervention.",
+  "robbery": "ALERT: Robbery in progress. Requesting immediate police response.",
+  "medical": "Medical emergency: Patient in critical condition. Urgently need medical assistance.",
+  "kidnapping": "Kidnapping incident reported. Urgently require police intervention.",
+  "domestic violence": "Domestic violence reported. Requesting police assistance.",
+  "burglary": "URGENT: Burglary in progress. Immediate police response needed.",
+  "sos": "SOS: Urgent assistance required. Location: [INSERT LOCATION]."
+}

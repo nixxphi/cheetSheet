@@ -1,0 +1,24 @@
+{
+    "police": {
+      "fire": "112",
+      "accident": "999",
+      "assault": "999",
+      "robbery": "999",
+      "kidnapping": "999",
+      "domestic violence": "999",
+      "burglary": "999",
+      "sos": "999"
+    },
+    "fire": {
+      "fire": "112",
+      "accident": "112",
+      "burglary": "112",
+      "sos": "112"
+    },
+    "medical": {
+      "accident": "999",
+      "medical": "999",
+      "sos": "999"
+    }
+  }
+  
