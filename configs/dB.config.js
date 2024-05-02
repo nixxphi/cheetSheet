@@ -1,13 +1,13 @@
 import mongoose from 'mongoose';
 import { GridFsStorage } from 'multer-gridfs-storage';
 import path from 'path';
-import dotenv from 'dotenv';
+
 // MongoDB connection setup
 mongoose.Promise = global.Promise;
-const dbURI = process.env.MONGODB_URI;
+const dbURI = process.env.MONGODB_URI || "your-mongodb-local-uri"; // Fallback to a local URI if MONGODB_URI is not provided
 const conn = mongoose.createConnection(dbURI, { useNewUrlParser: true, useUnifiedTopology: true });
 
-// GridFS storage configuration
+// GridFS storage configuration. The filename becomes geh db collection name so make sure you follow naming conventions
 const storage = new GridFsStorage({
     url: dbURI,
     file: (req, file) => {
@@ -15,7 +15,7 @@ const storage = new GridFsStorage({
             const filename = `${path.basename(file.originalname, path.extname(file.originalname))}-${Date.now()}${path.extname(file.originalname)}`;
             const fileInfo = {
                 filename,
-                bucketName: path.basename(file.originalname, path.extname(file.originalname)) // Collection name based on filename
+                bucketName: path.basename(file.originalname, path.extname(file.originalname))
             };
             resolve(fileInfo);
         });
