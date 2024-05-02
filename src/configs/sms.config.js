@@ -1,33 +1,51 @@
-const axios = require('axios');
+import axios from 'axios';
+import fs from 'fs';
+import path from 'path';
 
-const encodedParams = new URLSearchParams();
-encodedParams.set('sender', 'MessageBird');
-encodedParams.set('body', 'This is a gsm 7-bit test message.');
-encodedParams.set('destination', '31600000001,31600000002');
-encodedParams.set('reference', '268431687');
-encodedParams.set('timestamp', '201308020025');
-encodedParams.set('replacechars', 'checked');
-encodedParams.set('type', 'normal');
-encodedParams.set('dlr_url', 'http://www.example.com/dlr-messagebird.php');
+const sendNetMessage = async (messageBody, destinationNumbers, options = {}) => {
+    try {
+        // Construct request parameters
+        const encodedParams = new URLSearchParams();
+        encodedParams.set('body', messageBody);
+        encodedParams.set('destination', destinationNumbers.join(','));
 
-const options = {
-  method: 'POST',
-  url: 'https://messagebird-sms-gateway.p.rapidapi.com/sms',
-  params: {
-    username: '<REQUIRED>',
-    password: '<REQUIRED>'
-  },
-  headers: {
-    'content-type': 'application/x-www-form-urlencoded',
-    'X-RapidAPI-Key': '7a98b1419fmsh5cc11d934e5bb3bp1ac46bjsn5bf889772c43',
-    'X-RapidAPI-Host': 'messagebird-sms-gateway.p.rapidapi.com'
-  },
-  data: encodedParams,
+        // Add optional parameters
+        Object.entries(options).forEach(([key, value]) => {
+            encodedParams.set(key, value);
+        });
+
+        // Construct request options
+        const requestOptions = {
+            method: 'POST',
+            url: process.env.API_URL,
+            params: {
+                username: options.username,
+                password: options.password
+            },
+            headers: {
+                'content-type': 'application/x-www-form-urlencoded',
+                'X-API-Key': process.env.API_KEY,
+                'X-API-Host': process.env.API_HOST
+            },
+            data: encodedParams
+        };
+
+        // Send SMS message
+        const response = await axios.request(requestOptions);
+        console.log(response.data);
+        return response.data;
+    } catch (error) {
+        console.error('Error sending SMS:', error);
+        throw error;
+    }
 };
 
-try {
-	const response = await axios.request(options);
-	console.log(response.data);
-} catch (error) {
-	console.error(error);
-}
+// Load emergency messages from JSON file
+const emergencyMessagesPath = path.join(__dirname, 'data', 'emergency_messages.json');
+const emergencyMessages = JSON.parse(fs.readFileSync(emergencyMessagesPath, 'utf8'));
+
+// Load emergency contacts from JSON file
+const emergencyContactsPath = path.join(__dirname, 'data', 'emergency_contacts.json');
+const emergencyContacts = JSON.parse(fs.readFileSync(emergencyContactsPath, 'utf8'));
+
+export { sendNetMessage, emergencyMessages, emergencyContacts };
