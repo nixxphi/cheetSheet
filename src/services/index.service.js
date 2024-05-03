@@ -1,26 +1,38 @@
-
 import mongoose from 'mongoose';
 import GenericService from './generic.service.js';
 import PoliceModel from './models/police.model.js';
 import FireModel from './models/fire.model.js';
 import MedicalModel from './models/medical.model.js';
 
-// Instantiate generic services for specific objects
+// Instantiating generic services for specific objects
 const policeService = new GenericService(PoliceModel);
 const fireService = new GenericService(FireModel);
 const medicalService = new GenericService(MedicalModel);
 
-// Function to request aid from services
+/**
+ * Request aid from multiple emergency services.
+ * @param {Object} request - Request data containing police, fire, and medical details.
+ * @returns {Promise<Array>} Array of responses from each service.
+ */
 const requestAid = async (request) => {
     try {
+        // To validate the request data that we may avoid shege
+        if (!request || typeof request !== 'object') {
+            throw new Error('Invalid request data.');
+        }
+
+        if (!request.police || !request.fire || !request.medical) {
+            throw new Error('Missing required fields in request data.');
+        }
+
         let responses = [];
 
         // Request aid from police service
         const policeResponse = await policeService.create(request.police);
         responses.push(policeResponse);
 
-        // Request aid from fire service
-        const fireRequest = { ...request.fire, medical: request.medical }; // Include medical services in fire request
+        // Request aid from fire service, this comes with medical aid as well.
+        const fireRequest = { ...request.fire, medical: request.medical };
         const fireResponse = await fireService.create(fireRequest);
         responses.push(fireResponse);
 
@@ -31,11 +43,10 @@ const requestAid = async (request) => {
         return responses;
     } catch (error) {
         console.error('Error requesting aid:', error);
-        throw error;
+        throw new Error('An error occurred while processing the request.');
     }
 };
 
-// Export services and requestAid function
 export {
     policeService,
     fireService,

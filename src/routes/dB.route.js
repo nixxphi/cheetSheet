@@ -1,13 +1,14 @@
 import express from 'express';
-import dbController from '../controllers/dbController.js';
+import GenericServiceController from '../controllers/genericServiceController.js';
 
-const router = express.Router();
+const dbrouter = express.Router();
+const serviceController = new GenericServiceController();
 
 // Route for creating a new service
-router.post('/services', async (req, res) => {
+dbrouter.post('/services', async (req, res) => {
     try {
         const data = req.body;
-        const createdService = await dbController.createService(data);
+        const createdService = await serviceController.create(data);
         res.status(201).json(createdService);
     } catch (error) {
         console.error('Error creating service:', error);
@@ -16,9 +17,9 @@ router.post('/services', async (req, res) => {
 });
 
 // Route for retrieving all services
-router.get('/services', async (req, res) => {
+dbrouter.get('/services', async (req, res) => {
     try {
-        const services = await dbController.getAllServices();
+        const services = await serviceController.getAll();
         res.json(services);
     } catch (error) {
         console.error('Error getting all services:', error);
@@ -27,10 +28,10 @@ router.get('/services', async (req, res) => {
 });
 
 // Route for retrieving a specific service by ID
-router.get('/services/:id', async (req, res) => {
+dbrouter.get('/services/:id', async (req, res) => {
     try {
         const { id } = req.params;
-        const service = await dbController.getServiceById(id);
+        const service = await serviceController.getById(id);
         if (!service) {
             return res.status(404).json({ message: 'Service not found' });
         }
@@ -42,11 +43,11 @@ router.get('/services/:id', async (req, res) => {
 });
 
 // Route for updating an existing service
-router.put('/services/:id', async (req, res) => {
+dbrouter.put('/services/:id', async (req, res) => {
     try {
         const { id } = req.params;
         const newData = req.body;
-        const updatedService = await dbController.updateService(id, newData);
+        const updatedService = await serviceController.update(id, newData);
         if (!updatedService) {
             return res.status(404).json({ message: 'Service not found' });
         }
@@ -58,10 +59,10 @@ router.put('/services/:id', async (req, res) => {
 });
 
 // Route for deleting an existing service
-router.delete('/services/:id', async (req, res) => {
+dbrouter.delete('/services/:id', async (req, res) => {
     try {
         const { id } = req.params;
-        const deletedService = await dbController.deleteService(id);
+        const deletedService = await serviceController.delete(id);
         if (!deletedService) {
             return res.status(404).json({ message: 'Service not found' });
         }
@@ -72,4 +73,4 @@ router.delete('/services/:id', async (req, res) => {
     }
 });
 
-export default router;
+export default dbrouter;

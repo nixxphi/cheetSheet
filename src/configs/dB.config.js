@@ -4,10 +4,10 @@ import path from 'path';
 
 // MongoDB connection setup
 mongoose.Promise = global.Promise;
-const dbURI = process.env.MONGODB_URI || "your-mongodb-local-uri"; // Fallback to a local URI if MONGODB_URI is not provided
+const dbURI = process.env.MONGODB_URI;
 const conn = mongoose.createConnection(dbURI, { useNewUrlParser: true, useUnifiedTopology: true });
 
-// GridFS storage configuration. The filename becomes geh db collection name so make sure you follow naming conventions
+// GridFS storage configuration. The filename becomes the db collection name so make sure you follow naming conventions
 const storage = new GridFsStorage({
     url: dbURI,
     file: (req, file) => {
@@ -32,7 +32,7 @@ const handleError = (err, req, res, next) => {
     let message = 'Internal Server Error';
 
     if (err instanceof multer.MulterError) {
-        statusCode = 400; // Bad request
+        statusCode = 400; 
 
         switch (err.code) {
             case 'LIMIT_FILE_SIZE':
@@ -67,7 +67,7 @@ conn.once('open', () => {
     console.log('Connected to MongoDB database');
 });
 
-// Handle connection errors (optional)
+// Error handler
 conn.on('error', (err) => {
     console.error('Error connecting to MongoDB:', err);
 });

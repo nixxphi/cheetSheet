@@ -1,0 +1,30 @@
+{
+    "synonyms": {
+      "car accident": ["Medical", "Road Safety", "Police"],
+      "fire": ["Fire Service", "Medical", "Police"],
+      "heart attack": ["Medical"],
+      "burglary": ["Police"],
+      "drowning": ["Medical", "NEMA"],
+      "plague": ["Medical"],
+      "terrorism": ["Police"],
+      "violence": ["Police"],
+      "poison": ["Police", "Medical"],
+      "death": ["Police", "Medical"],
+      "choking": ["Medical"],
+      "earthquake": ["NEMA", "Medical", "Fire Service"],
+      "flood": ["NEMA", "Medical", "Fire Service"],
+      "gas leak": ["Fire Service", "Medical"],
+      "kidnapping": ["Police"],
+      "shooting": ["Police", ],
+      "stabbing": ["Police", "Medical"],
+      "suicide": ["Police", "Medical"],
+      "accident": ["Medical", "Road Safety", "Police"],
+      "injury": ["Medical", "Police"],
+      "fall": ["Medical", "Road Safety", "Police"],
+      "emergency": ["Medical", "Police"],
+      "assault": ["Police", "Medical"],
+      "medical emergency": ["Medical"],
+      "mental health crisis": ["Medical", "Police"]
+    }
+  }
+  

@@ -2,6 +2,7 @@ import axios from 'axios';
 import fs from 'fs';
 import path from 'path';
 import PoliceModel from '../models/police.model.js';
+import { sendSMS, makeVoiceCall } from '../configs/webPhone.config.js';
 
 // Define path to the emergency messages JSON file
 const emergencyMessagesPath = path.join(__dirname, '..', 'data', 'emergency_messages.json');
@@ -9,15 +10,11 @@ const emergencyMessagesPath = path.join(__dirname, '..', 'data', 'emergency_mess
 // Define path to the phone numbers JSON file
 const phoneNumbersPath = path.join(__dirname, '..', 'data', 'phone_numbers.json');
 
-// Import sendMessage function from sms.config.js
-import sendNetMessage from '../config/sms.config.js';
-
 class PoliceController {
     // Method to find the nearest police station
     async findNearestPolice(latitude, longitude) {
         try {
             // Logic to find the nearest police station based on location coordinates
-            // For simplicity, let's assume you have a geospatial index on the location field
             const nearestPoliceStation = await PoliceModel.findOne({
                 location: {
                     $near: {
@@ -39,8 +36,8 @@ class PoliceController {
     // Method to send a text message to the police station
     async sendTextMessage(contactNumber, message) {
         try {
-            // Call sendNetMessage function to send the text message
-            await sendNetMessage(message, [contactNumber]);
+            // Call sendSMS function to send the text message
+            await sendSMS(message, [contactNumber]);
             return { success: true, message: 'Text message sent successfully' };
         } catch (error) {
             console.error('Error sending text message to police station:', error);
@@ -48,20 +45,11 @@ class PoliceController {
         }
     }
 
-    // Method to send a phone call to the police station
+    // Method to make a phone call to the police station
     async makePhoneCall(contactNumber) {
         try {
-            // Load phone numbers from JSON file
-            const phoneNumbers = JSON.parse(fs.readFileSync(phoneNumbersPath, 'utf8'));
-
-            // Check if the contact number exists in the phone numbers
-            if (!phoneNumbers.includes(contactNumber)) {
-                throw new Error(`Contact number '${contactNumber}' not found in allowed phone numbers`);
-            }
-
-            // Logic to make a phone call to the specified contact number
-
-            
+            // to make the phone call
+            await makeVoiceCall('Emergency alert! Please respond immediately.', contactNumber);
             return { success: true, message: 'Phone call made successfully' };
         } catch (error) {
             console.error('Error making phone call to police station:', error);
