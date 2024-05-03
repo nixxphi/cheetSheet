@@ -1,6 +1,6 @@
 import mongoose from 'mongoose';
 
-// Define the schema for the police service
+// Defining the schema for the police service
 const PoliceSchema = new mongoose.Schema({
     name: {
         type: String,
@@ -32,7 +32,7 @@ const PoliceSchema = new mongoose.Schema({
     }
 });
 
-// Create a model for the police service
+// Creating a model for the police service
 const PoliceModel = mongoose.model('Police', PoliceSchema);
 
 export default PoliceModel;
