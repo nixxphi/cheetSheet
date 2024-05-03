@@ -1,0 +1,57 @@
+{
+    "police": [
+      {
+        "type": "Police",
+        "synonyms": ["Police", "Law Enforcement", "Security"],
+        "contact_number": "112",
+        "description": "For reporting crimes or emergencies requiring police assistance."
+      },
+      {
+        "type": "Nigerian Security and Civil Defence Corps (NSCDC)",
+        "synonyms": ["NSCDC", "Civil Defence"],
+        "contact_number": "112",
+        "description": "For reporting security threats and emergencies."
+      }
+    ],
+    "fire_service": [
+      {
+        "type": "Fire Service",
+        "synonyms": ["Fire Service", "Fire Department", "Fire Brigade"],
+        "contact_number": "112",
+        "description": "For reporting fire incidents or emergencies."
+      }
+    ],
+    "medical": [
+      {
+        "type": "Ambulance",
+        "synonyms": ["Ambulance", "Emergency Medical Services", "EMS"],
+        "contact_number": "112",
+        "description": "For medical emergencies and ambulance services."
+      },
+      {
+        "type": "Federal Road Safety Corps (FRSC)",
+        "synonyms": ["FRSC", "Road Safety"],
+        "contact_number": "122",
+        "description": "For road accidents and traffic-related emergencies."
+      },
+      {
+        "type": "NEMA Emergency Operations Center",
+        "synonyms": ["NEMA", "Emergency Operations Center", "Disaster Response"],
+        "contact_number": "112",
+        "description": "For national emergencies, disaster response, and humanitarian aid."
+      },
+      {
+        "type": "Nigerian Red Cross Society",
+        "synonyms": ["Red Cross", "NGO Emergency Services"],
+        "contact_number": "112",
+        "description": "For emergency medical assistance and disaster relief."
+      },
+      {
+        "type": "Nigerian Maritime Administration and Safety Agency (NIMASA)",
+        "synonyms": ["NIMASA", "Maritime Safety"],
+        "contact_number": "112",
+        "description": "For maritime emergencies and safety issues."
+      }
+    ]
+  }
+  
