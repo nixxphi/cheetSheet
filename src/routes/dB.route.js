@@ -1,8 +1,8 @@
 import express from 'express';
-import GenericServiceController from '../controllers/genericServiceController.js';
+import GenericService from '../services/generic.service.js';
 
 const dbrouter = express.Router();
-const serviceController = new GenericServiceController();
+const serviceController = new GenericService();
 
 // Route for creating a new service
 dbrouter.post('/services', async (req, res) => {
