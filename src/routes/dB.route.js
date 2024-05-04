@@ -5,7 +5,7 @@ const dbrouter = express.Router();
 const serviceController = new GenericService();
 
 // Route for creating a new service
-dbrouter.post('/services', async (req, res) => {
+dbrouter.post('/services/db', async (req, res) => {
     try {
         const data = req.body;
         const createdService = await serviceController.create(data);

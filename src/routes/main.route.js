@@ -6,7 +6,7 @@ import dbrouter from "./dB.route.js";
 
 const mainRouter = express.Router();
 
-// Mountinr routers
+// Mounting routers
 mainRouter.use('/services/police', PoliceRouter);
 mainRouter.use('/services/db', dbrouter);
 mainRouter.use('/services/fire', FireRouter);
