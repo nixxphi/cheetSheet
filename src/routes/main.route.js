@@ -7,9 +7,9 @@ import dbrouter from "./dB.route.js";
 const mainRouter = express.Router();
 
 // Mountinr routers
-mainRouter.use('/police', PoliceRouter);
-mainRouter.use('/db', dbrouter);
-mainRouter.use('/fire', FireRouter);
-mainRouter.use('/medical', MedicalRouter);
+mainRouter.use('/services/police', PoliceRouter);
+mainRouter.use('/services/db', dbrouter);
+mainRouter.use('/services/fire', FireRouter);
+mainRouter.use('/services/medical', MedicalRouter);
 
 export default mainRouter;

@@ -36,7 +36,7 @@ app.get('/', (req, res) => {
     res.send('Welcome to the Emergency Services API');
 });
 
-// Start the server
+// Starting the server
 const PORT = process.env.PORT || 6969;
 app.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}`);

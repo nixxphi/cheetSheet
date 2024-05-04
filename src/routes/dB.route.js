@@ -17,7 +17,7 @@ dbrouter.post('/services', async (req, res) => {
 });
 
 // Route for retrieving all services
-dbrouter.get('/services', async (req, res) => {
+dbrouter.get('/services/db', async (req, res) => {
     try {
         const services = await serviceController.getAll();
         res.json(services);
@@ -28,7 +28,7 @@ dbrouter.get('/services', async (req, res) => {
 });
 
 // Route for retrieving a specific service by ID
-dbrouter.get('/services/:id', async (req, res) => {
+dbrouter.get('/services/db/:id', async (req, res) => {
     try {
         const { id } = req.params;
         const service = await serviceController.getById(id);
@@ -43,7 +43,7 @@ dbrouter.get('/services/:id', async (req, res) => {
 });
 
 // Route for updating an existing service
-dbrouter.put('/services/:id', async (req, res) => {
+dbrouter.put('/services/db/:id', async (req, res) => {
     try {
         const { id } = req.params;
         const newData = req.body;
