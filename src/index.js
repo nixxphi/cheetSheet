@@ -28,10 +28,10 @@ mongoose.connect(process.env.MONGODB_URI, {
     .catch(err => console.error('Error connecting to MongoDB:', err));
 
 // Routes
-app.use('/api', mainRouter);
+app.use('/api/v1/', mainRouter);
 
 // Route to handle emergency requests
-app.post('/api/emergency', async (req, res) => {
+app.post('/api/v1/emergency', async (req, res) => {
     try {
         const { type, location } = req.body;
 
@@ -57,7 +57,7 @@ app.post('/api/emergency', async (req, res) => {
 
 // Default route
 app.get('/', (req, res) => {
-    res.send('Welcome to the Emergency Services API');
+    res.send('Welcome to the Save!Me API');
 });
 
 // Starting the server
