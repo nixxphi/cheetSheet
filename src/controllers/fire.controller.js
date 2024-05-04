@@ -21,7 +21,7 @@ class FireController {
                         }
                     }
                 }
-            }).select('contact_number');
+            }).select('contactNumber');
 
             return nearestFireStation;
         } catch (error) {
@@ -67,10 +67,10 @@ class FireController {
             const nearestFireStation = await this.findNearestFireStation(latitude, longitude);
 
             // Send text message to the nearest fire station
-            await this.sendTextMessage(nearestFireStation.contact_number, message);
+            await this.sendTextMessage(nearestFireStation.contactNumber, message);
 
             // Make voice call to the nearest fire station
-            await this.makeVoiceCall(nearestFireStation.contact_number);
+            await this.makeVoiceCall(nearestFireStation.contactNumber);
 
             return { success: true, message: 'Fire emergency handled successfully' };
         } catch (error) {

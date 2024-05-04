@@ -10,7 +10,7 @@ const PoliceSchema = new mongoose.Schema({
         type: String,
         required: true
     },
-    contact_number: {
+    contacNumber: {
         type: String,
         required: true
     },

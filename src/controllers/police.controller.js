@@ -1,4 +1,4 @@
-import axios from 'axios';
+
 import fs from 'fs';
 import path from 'path';
 import PoliceModel from '../models/police.model.js';
@@ -24,7 +24,7 @@ class PoliceController {
                         }
                     }
                 }
-            }).select('contact_number');
+            }).select('contactNumber');
 
             return nearestPoliceStation;
         } catch (error) {
@@ -75,10 +75,10 @@ class PoliceController {
             const nearestPoliceStation = await this.findNearestPolice(latitude, longitude);
 
             // Send text message to the nearest police station
-            await this.sendTextMessage(nearestPoliceStation.contact_number, message);
+            await this.sendTextMessage(nearestPoliceStation.contactNumber, message);
 
             // Make phone call to the nearest police station
-            await this.makePhoneCall(nearestPoliceStation.contact_number);
+            await this.makePhoneCall(nearestPoliceStation.contactNumber);
 
             return { success: true, message: 'Emergency handled successfully' };
         } catch (error) {

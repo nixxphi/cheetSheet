@@ -8,7 +8,7 @@ const serviceSchema = new mongoose.Schema({
         latitude: { type: Number, required: true },
         longitude: { type: Number, required: true }
     },
-    contact_number: { type: String, required: true }
+    contactNumber: { type: String, required: true }
 });
 
 // Create Mongoose model for services

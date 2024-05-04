@@ -20,7 +20,7 @@ class MedicalController {
                         }
                     }
                 }
-            }).select('contact_number');
+            }).select('contactNumber');
 
             return nearestMedicalService;
         } catch (error) {
