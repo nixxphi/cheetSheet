@@ -27,16 +27,16 @@ const requestAid = async (request) => {
 
         let responses = [];
 
-        // Request aid from police service
+        // For requesting aid from police service
         const policeResponse = await policeService.create(request.police);
         responses.push(policeResponse);
 
-        // Request aid from fire service, this comes with medical aid as well.
+        // For requesting aid from fire service, this comes with medical aid as well.
         const fireRequest = { ...request.fire, medical: request.medical };
         const fireResponse = await fireService.create(fireRequest);
         responses.push(fireResponse);
 
-        // Request medical assistance
+        // For requesting medical assistance
         const medicalResponse = await medicalService.create(request.medical);
         responses.push(medicalResponse);
 
