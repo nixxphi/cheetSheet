@@ -15,7 +15,7 @@
       "flood": ["NEMA", "Medical", "Fire Service"],
       "gas leak": ["Fire Service", "Medical"],
       "kidnapping": ["Police"],
-      "shooting": ["Police", ],
+      "shooting": ["Police"],
       "stabbing": ["Police", "Medical"],
       "suicide": ["Police", "Medical"],
       "accident": ["Medical", "Road Safety", "Police"],
