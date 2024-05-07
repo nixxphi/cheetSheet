@@ -1,4 +1,4 @@
-import jwt from 'jsonwebtoken';
+import jwt from 'jwt';
 
 export function generateJwtToken(user) {
   const payload = {

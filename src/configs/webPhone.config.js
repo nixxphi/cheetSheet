@@ -1,56 +1,21 @@
-import axios from 'axios';
 
-// Function to send an SMS message
-async function sendSMS(messageBody, destinationNumbers) {
+export async function makeVoiceCall(emergencyNumber) {
     try {
-        // Construct request data
-        const smsData = {
-            body: messageBody,
-            to: destinationNumbers,
-        };
-
-        // Send SMS message using Twilio API
-        const response = await axios.post(`${process.env.TWILIO_API_URL}/messages`, smsData, {
-            auth: {
-                username: process.env.TWILIO_ACCOUNT_SID,
-                password: process.env.TWILIO_AUTH_TOKEN,
-            },
-        });
-
-        console.log('SMS message sent successfully:', response.data);
-        return response.data;
+        window.location.href = `tel:${emergency}`;
+        return 'Voice call initiated successfully';
     } catch (error) {
-        console.error('Error sending SMS:', error.response.data);
-        throw error;
+        console.error('Error making voice call:', error);
+        throw new Error('Error making voice call');
     }
 }
 
-// Function to make a voice call
-async function makeVoiceCall(messageBody, destinationNumber) {
+// Function to send an SMS
+export async function sendSMS(emergencyNumber, messageBody) {
     try {
-        // Construct request data
-        const callData = {
-            twiml: `<Response><Say>${messageBody}</Say></Response>`,
-            to: destinationNumber,
-        };
-
-        // Make voice call using Twilio API
-        const response = await axios.post(`${process.env.TWILIO_API_URL}/calls`, callData, {
-            auth: {
-                username: process.env.TWILIO_ACCOUNT_SID,
-                password: process.env.TWILIO_AUTH_TOKEN,
-            },
-        });
-
-        console.log('Voice call initiated successfully:', response.data);
-        return response.data;
+       window.location.href = `sms:${emergencyNumber}?body=${encodeURIComponent(messageBody)}`;
+        return 'SMS sent successfully';
     } catch (error) {
-        console.error('Error making voice call:', error.response.data);
-        throw error;
+        console.error('Error sending SMS:', error);
+        throw new Error('Error sending SMS');
     }
 }
-
-export default {
-    sendSMS,
-    makeVoiceCall,
-};

@@ -2,7 +2,8 @@ import passport from 'passport';
 import { Strategy as LocalStrategy } from 'passport-local';
 import { Strategy as JwtStrategy, ExtractJwt } from 'passport-jwt';
 import User from './models/user.model.js';
-// Please make sure that user medel is in the right place. I mean you David.
+import { userService } from '../services/index.service'
+// Please make sure that user model is in the right place. I mean you David.
 
 // Using local strategy for username/password authentication
 passport.use(new LocalStrategy({

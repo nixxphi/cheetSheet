@@ -3,7 +3,7 @@ const mongoose = require('mongoose');
 
 
 const EmergencyService = new  mongoose.Schema({
-    incidentType: {
+    type: {
         type: String,
         required: true
     },

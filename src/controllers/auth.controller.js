@@ -1,7 +1,7 @@
 import passport from 'passport';
 import jwt from 'jsonwebtoken';
 import bcrypt from 'bcrypt';
-import User from './models/user.model.js'; 
+import User from '../models/user.model.js'; 
 
 // Controller function for user login
 async function login(req, res, next) {
@@ -31,9 +31,8 @@ async function register(req, res, next) {
         if (existingUser) {
             return res.status(400).json({ message: 'Username already exists' });
         }
-        // Hash the password before saving
+
         const hashedPassword = await bcrypt.hash(password, 10);
-        // Create a new user with hashed password
         const newUser = new User({ username, password: hashedPassword });
         await newUser.save();
         return res.status(201).json({ message: 'User created successfully' });

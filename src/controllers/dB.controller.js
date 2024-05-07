@@ -3,7 +3,7 @@ import mongoose from 'mongoose';
 // Define schema for services
 const serviceSchema = new mongoose.Schema({
     name: { type: String, required: true },
-    type: { type: String, required: true }, // Type of service (e.g., fire, police, ambulance)
+    type: { type: String, required: true },
     location: {
         latitude: { type: Number, required: true },
         longitude: { type: Number, required: true }

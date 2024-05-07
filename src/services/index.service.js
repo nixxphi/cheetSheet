@@ -1,8 +1,8 @@
 import mongoose from 'mongoose';
 import GenericService from './generic.service.js';
-import PoliceModel from './models/police.model.js';
-import FireModel from './models/fire.model.js';
-import MedicalModel from './models/medical.model.js';
+import PoliceModel from '../models/police.model.js';
+import FireModel from '../models/fire.model.js';
+import MedicalModel from '../models/medical.model.js';
 
 // Instantiating generic services for specific objects
 const policeService = new GenericService(PoliceModel);

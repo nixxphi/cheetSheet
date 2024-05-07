@@ -2,13 +2,13 @@
 import fs from 'fs';
 import path from 'path';
 import PoliceModel from '../models/police.model.js';
-import { sendSMS, makeVoiceCall } from '../configs/webPhone.config.js';
+import phone from '../configs/webPhone.config.js';
 
 // Define path to the emergency messages JSON file
 const emergencyMessagesPath = path.join(__dirname, '..', 'data', 'emergency_messages.json');
 
 // Define path to the phone numbers JSON file
-const phoneNumbersPath = path.join(__dirname, '..', 'data', 'phone_numbers.json');
+const phoneNumbersPath = path.join(__dirname, '..', 'data', 'emergency_contacts.json');
 
 class PoliceController {
     // Method to find the nearest police station
@@ -37,7 +37,7 @@ class PoliceController {
     async sendTextMessage(contactNumber, message) {
         try {
             // Call sendSMS function to send the text message
-            await sendSMS(message, [contactNumber]);
+            await phone.sendSMS(message, [contactNumber]);
             return { success: true, message: 'Text message sent successfully' };
         } catch (error) {
             console.error('Error sending text message to police station:', error);
@@ -49,7 +49,7 @@ class PoliceController {
     async makePhoneCall(contactNumber) {
         try {
             // to make the phone call
-            await makeVoiceCall('Emergency alert! Please respond immediately.', contactNumber);
+            await phone.makeVoiceCall('Emergency alert! Please respond immediately.', contactNumber);
             return { success: true, message: 'Phone call made successfully' };
         } catch (error) {
             console.error('Error making phone call to police station:', error);

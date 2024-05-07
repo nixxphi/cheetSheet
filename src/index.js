@@ -5,7 +5,7 @@ import morgan from 'morgan';
 import cors from 'cors';
 import bodyParser from 'body-parser';
 import mainRouter from './routes/main.route.js';
-import { requestAid } from './index.service.js';
+import { requestAid } from './services/index.service.js';
 import { getLocation } from './utils/location.utils.js';
 import synonymMapping from './utils/synonymMapping.utils.js';
 
