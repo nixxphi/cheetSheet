@@ -18,7 +18,7 @@ const medicalSchema = new mongoose.Schema({
             required: true
         }
     },
-    contact_number: {
+    contactNumber: {
         type: String,
         required: true
     },
