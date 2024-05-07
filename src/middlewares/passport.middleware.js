@@ -1,48 +1,49 @@
 import passport from 'passport';
 import { Strategy as LocalStrategy } from 'passport-local';
 import { Strategy as JwtStrategy, ExtractJwt } from 'passport-jwt';
-import bcrypt from 'bcrypt';
-import User from './models/user.model.js'; 
+import User from './models/user.model.js';
+// Please make sure that user medel is in the right place. I mean you David.
 
-// Configuring local strategy(which i just found on stackOF) for username/password authentication.Lets hope this works right.
-passport.use(new LocalStrategy(async (username, password, done) => {
-    try {
-        // Find user by username in the database
-        const user = await User.findOne({ username });
+// Using local strategy for username/password authentication
+passport.use(new LocalStrategy({
+  usernameField: 'email',
+  passwordField: 'password',
+}, async (email, password, done) => {
+  try {
+    // To find user by email
+    const user = await User.findOne({ email });
 
-        // If user not found or password does not match, return error
-        if (!user || !bcrypt.compareSync(password, user.password)) {
-            return done(null, false, { message: 'Incorrect username or password' });
-        }
-
-        // If the user is found and the password matches...
-        return done(null, user);
-    } catch (error) {
-        return done(error);
+    // If the user isn't found or the password is wrong.
+    if (!user || !await user.isValidPassword(password)) {
+      return done(null, false, { message: 'Invalid email or password' });
     }
+
+    // Authentication successful, return user, yay!!
+    return done(null, user);
+  } catch (error) {
+    return done(error);
+  }
 }));
 
-// Configuring JWT strategy for token-based authentication
-const jwtOptions = {
-    jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
-    secretOrKey: process.env.JWT_SECRET,
-};
+// JWT strategy for token-based authentication
+passport.use(new JwtStrategy({
+  jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
+  secretOrKey: process.env.JWT_SECRET,
+}, async (payload, done) => {
+  try {
+    // Find user by ID from JWT payload
+    const user = await User.findById(payload.id);
 
-passport.use(new JwtStrategy(jwtOptions, async (payload, done) => {
-    try {
-        // Find user by ID in the database
-        const user = await User.findById(payload.id);
-
-        // If user not found, return error
-        if (!user) {
-            return done(null, false);
-        }
-
-        // If user found, return user object
-        return done(null, user);
-    } catch (error) {
-        return done(error);
+    // If user not found
+    if (!user) {
+      return done(null, false);
     }
+
+    // Authentication successful, return user
+    return done(null, user);
+  } catch (error) {
+    return done(error);
+  }
 }));
 
 export default passport;
